@@ -20,5 +20,5 @@ do
 done
 
 mkdir "$2"
-cp -v $tempdir/* "$2"
+cp -v $tempdir/*.tif "$2"
 rm -r $tempdir
