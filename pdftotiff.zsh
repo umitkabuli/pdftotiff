@@ -2,13 +2,13 @@
 
 if (( $# != 2 ));
 then
-	print "$0 input_file.pdf output_file.pdf"
+	print "$0 input_file.pdf output_dir"
 	exit -1;
 fi
 
 startdir=$(pwd)
 tempdir=$(mktemp -d)
-mudraw -o "$tempdir/%d.pbm" -r300 $1
+mutool draw -o "$tempdir/%d.pbm" -r300 $1
 pushd $tempdir
 print "moved to temporary directory $(pwd)"
 for pbm in $(ls *.pbm|sort -n);
@@ -19,6 +19,6 @@ do
 	ppm2tiff -c g4 -R 300 "$pbm" "$tiff_name";
 done
 
-tiffcp -c g4 $all_tiffs "$startdir/$2"
-popd
+mkdir "$2"
+cp -v $tempdir/* "$2"
 rm -r $tempdir
